@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Walnut - Take Home Test</title>
+  <style type="text/css">
+      html, body {
+        height: 100%;
+      }
+
+      html {
+        display: table;
+        margin: auto;
+      }
+
+      body {
+      display: table-cell;
+      vertical-align: middle;
+      }
+
+      header {
+        width: 500px;
+        height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+
+      main {
+        width: 500px;
+        height:  500px;
+        display: block;
+      }
+
+      .grid {
+        width: 100%;
+        height:  100%;
+        display: inline-grid;
+      }
+
+      .one {
+        grid-template-columns: repeat(5, 100px);
+        grid-template-rows: repeat(5, 100px);
+      }
+
+      .two {
+        grid-template-columns: repeat(10, 50px);
+        grid-template-rows: repeat(10, 50px);
+      }
+
+      .three {
+        grid-template-columns: repeat(20, 25px);
+        grid-template-rows: repeat(20, 25px);
+      }
+
+      .tile {
+        background-color: #ffffff;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #323232;
+      }
+
+      .dropdown {
+        height: 35px;
+        width: 145px;
+        padding-left: 10px;
+      }
+
+      .button {
+        background-color: #2D67D2;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 16px;
+        letter-spacing: 1px;
+        border-radius: 5px;
+        border-style: none;
+        height: 35px;
+        width: 115px;
+        cursor: pointer;
+        transition-duration: 0.25s;
+      }
+
+        .button:hover {
+        background-color: #ffffff;
+        color: #2D67D2;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #2D67D2;
+
+      }
+
+    </style>
+  </head>
+
+    <body>
+        <header>
+          <select class="dropdown">
+            <option value="25">5x5</option>
+            <option value="100">10x10</option>
+            <option value="400">20x20</option>
+          </select>
+          <button class="button">Start</button>
+        </header>
+        <main>
+          <div class="grid one">
+          </div>
+        </main>
+
+        <script type="text/javascript">
+          //declaring variables
+          const gridDiv = document.querySelector(".grid");
+          const options = document.querySelector(".dropdown");
+          const btn = document.querySelector(".button");
+          let tileAmount = 25;
+          let classNum;
+
+          // intial grid load
+          addElement();
+
+          // reset grid on change
+          function addElement() {
+            while (gridDiv.firstChild) {
+              gridDiv.removeChild(gridDiv.lastChild);
+            }
+
+            for (let i = 0; i < tileAmount; i++) {
+              const tileDiv = document.createElement("div");
+              tileDiv.className = "tile";
+              tileDiv.addEventListener("mouseover", function(){changeColour(tileDiv)})
+              gridDiv.append(tileDiv);
+            }
+          }
+
+          //number of tiles based on selection
+          options.addEventListener("change", (event) => {changeGrid(event.target.value)});
+
+          function changeGrid(value) {
+            tileAmount = value;
+
+            addElement();
+
+            switch (value) {
+              case "25":
+                classNum = "one";
+                break;
+              case "100":
+                classNum = "two";
+                break;
+              case "400":
+                classNum = "three";
+            }
+
+            gridDiv.className = "grid " + classNum;
+          }
+
+          //changing the colour of the tiles
+          function changeColour(tileDiv) {
+            if (tileDiv.style.backgroundColor !== "lightskyblue") {
+              tileDiv.style.backgroundColor = "lightskyblue";
+            } else if (tileDiv.style.backgroundColor === "lightskyblue") {
+              tileDiv.style.backgroundColor = "white";
+            }
+          };
+
+          //changing the text of the button
+          btn.addEventListener("mouseover", function() {
+            this.textContent = "Reset";
+          })
+          btn.addEventListener("mouseout", function() {
+            this.textContent = "Start";
+          })
+
+          //resetting the tiles on click
+          btn.addEventListener('click', function onClick() {
+            addElement();
+          })
+
+        </script>
+      </body>
+    </html>
